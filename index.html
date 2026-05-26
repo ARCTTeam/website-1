@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITechProject | Acceso</title>
+    <!-- RECURSOS LOCALES (offline) -->
+    <script src="js/tailwind.js"></script>
+    <script src="js/tailwind-config.js"></script>
+    <script src="js/lucide.js"></script>
+    <link href="css/fonts.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+        .login-card {
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+        }
+        .login-input {
+            background: rgba(0, 0, 0, 0.4) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 0.75rem !important;
+            color: white !important;
+            transition: all 0.3s ease;
+        }
+        .login-input:focus {
+            background: rgba(0, 0, 0, 0.6) !important;
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3) !important;
+            outline: none;
+        }
+        .login-input::placeholder {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+        .btn-login {
+            background: linear-gradient(90deg, #3b82f6, #6366f1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-login:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+        }
+        .checkbox-custom {
+            accent-color: #3b82f6;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="login-card rounded-2xl p-8 w-full max-w-md text-white">
+        <div class="text-center mb-8">
+            <div class="inline-flex p-3 bg-blue-500/20 rounded-full mb-4">
+                <i data-lucide="zap" class="w-10 h-10 text-blue-400"></i>
+            </div>
+            <h1 class="text-3xl font-black tracking-tight">ITech<span class="text-blue-400">Project</span></h1>
+            <p class="text-slate-300 text-sm mt-2">Control de Precios Profesional</p>
+        </div>
+
+        <form id="loginForm" class="space-y-5">
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">Usuario</label>
+                <input type="text" id="username" class="login-input w-full px-4 py-3 placeholder:text-slate-400" placeholder="admin" autocomplete="off">
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">Contraseña</label>
+                <input type="password" id="password" class="login-input w-full px-4 py-3 placeholder:text-slate-400" placeholder="••••••">
+            </div>
+            <div class="flex items-center justify-between">
+                <label class="flex items-center gap-2 text-sm">
+                    <input type="checkbox" id="remember" class="checkbox-custom w-4 h-4 rounded">
+                    <span>Recordar sesión</span>
+                </label>
+                <a href="#" id="forgotLink" class="text-xs text-blue-300 hover:text-blue-200">¿Olvidaste tu contraseña?</a>
+            </div>
+            <button type="submit" class="btn-login w-full py-3 rounded-lg font-bold uppercase tracking-wider shadow-lg transition-all">Ingresar</button>
+        </form>
+
+        <div id="errorMsg" class="mt-4 text-center text-red-300 text-sm hidden"></div>
+
+        <div class="mt-6 text-center text-slate-400 text-[10px] uppercase tracking-wider">
+            <span>© 2026 ITechProject | Seguridad Local</span>
+        </div>
+    </div>
+
+    <script>
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    </script>
+    <script src="js/login.js"></script>
+</body>
+
+</html>

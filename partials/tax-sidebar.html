@@ -1,0 +1,58 @@
+<aside class="w-80 flex-shrink-0 space-y-6 lg:sticky lg:top-36 font-bold text-center">
+    <div
+        class="bg-white dark:bg-darkcard rounded-lg p-8 border border-slate-100 dark:border-slate-800 shadow-2xl flex flex-col gap-6">
+        <div class="flex items-center justify-center gap-3 text-slate-500"><i data-lucide="pie-chart"
+                class="w-7 h-7"></i>
+            <h3 class="font-black text-sm uppercase tracking-widest">Resumen de Impuestos</h3>
+        </div>
+        <div class="unified-box">
+            <div class="unified-row">
+                <div class="flex flex-col items-start">
+                    <div class="flex items-center gap-2 mb-0.5 text-blue-400"><i data-lucide="arrow-up-right"
+                            class="w-3.5 h-3.5"></i><label
+                            class="text-[10px] font-black uppercase tracking-widest">Ventas o Servicios (10%)</label>
+                    </div>
+                    <span id="tax-10-val"
+                        class="font-mono-finance font-bold text-sm text-slate-800 dark:text-slate-200 tracking-tighter">$
+                        0.00</span>
+                </div>
+            </div>
+            <div class="unified-row">
+                <div class="flex flex-col items-start">
+                    <div class="flex items-center gap-2 mb-0.5 text-emerald-500"><i data-lucide="user-check"
+                            class="w-3.5 h-3.5"></i><label
+                            class="text-[10px] font-black uppercase tracking-widest">Ingresos Personales (5%
+                            -$3k)</label></div>
+                    <span id="tax-5-val"
+                        class="font-mono-finance font-bold text-sm text-slate-800 dark:text-slate-200 tracking-tighter">$
+                        0.00</span>
+                </div>
+            </div>
+            <div class="unified-row">
+                <div class="flex flex-col items-start">
+                    <div class="flex items-center gap-2 mb-0.5 text-amber-500"><i data-lucide="calendar"
+                            class="w-3.5 h-3.5"></i><label
+                            class="text-[10px] font-black uppercase tracking-widest">Acumulativo-DJ08 (10%)</label>
+                    </div>
+                    <span id="tax-15-val"
+                        class="font-mono-finance font-bold text-sm text-slate-800 dark:text-slate-200 tracking-tighter">$
+                        0.00</span>
+                </div>
+            </div>
+        </div>
+        <div class="liquid-gradient p-3 rounded-lg text-white text-center mt-4 shadow-xl">
+            <p class="text-[9px] font-black uppercase tracking-widest mb-1 opacity-70 font-bold">Liquidación Sugerida
+            </p>
+            <div id="p-final-val" class="text-4xl font-black font-mono-finance tracking-tighter">$ 0.00</div>
+        </div>
+        <div class="space-y-4 pt-4 border-t dark:border-slate-800 text-center">
+            <button onclick="generarFactura()"
+                class="w-full bg-slate-950 dark:bg-slate-800 border dark:border-slate-700 text-white font-black py-4 rounded-lg flex items-center justify-center gap-3 uppercase text-[13px] tracking-widest shadow-xl transition-all hover:scale-105 active:scale-95"><i
+                    data-lucide="printer" class="w-4 h-4"></i> Exportar </button>
+            <button onclick="openResetModal()"
+                class="flex items-center justify-center gap-2 text-slate-400 font-black text-[10px] uppercase tracking-[0.3em] py-3 hover:text-red-500 transition-all group mx-auto font-bold"><i
+                    data-lucide="refresh-cw" class="w-3.5 h-3.5 group-hover:rotate-180 transition-all duration-500"></i>
+                Limpiar Todo</button>
+        </div>
+    </div>
+</aside>

@@ -1,0 +1,385 @@
+/* ==============================================
+   ITechProject - Estilos principales (CORREGIDO)
+   ============================================== */
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: background-color 0.4s ease;
+}
+
+.font-mono-finance {
+    font-family: 'JetBrains Mono', monospace;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    text-align: right !important;
+}
+
+input {
+    background-color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    color: inherit;
+}
+
+.force-uppercase {
+    text-transform: uppercase !important;
+}
+
+.card-pro {
+    min-height: 110px;
+    padding: 1.25rem 1.75rem !important;
+}
+
+/* ==============================================
+   GLASSMORPHISM DASHBOARD (wave con gradiente CSS)
+   ============================================== */
+.card-wave {
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+    transition: 0.3s;
+}
+
+.dark .card-wave {
+    background: rgba(18, 25, 38, 0.75);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.card-wave::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 45%;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(59, 130, 246, 0) 80%);
+    border-radius: 100% 100% 0 0 / 30px 30px 0 0;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.card-wave.wave-blue::after {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(59, 130, 246, 0) 80%);
+}
+
+.card-wave.wave-green::after {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(16, 185, 129, 0) 80%);
+}
+
+.card-wave.wave-orange::after {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(245, 158, 11, 0) 80%);
+}
+
+.card-wave.wave-indigo::after {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(99, 102, 241, 0) 80%);
+}
+
+.card-wave.wave-indigo {
+    border-bottom-color: #6366f1;
+}
+
+.card-wave.wave-blue {
+    border-bottom-color: #3b82f6;
+}
+
+.card-wave.wave-green {
+    border-bottom-color: #10b981;
+}
+
+.card-wave.wave-orange {
+    border-bottom-color: #f59e0b;
+}
+
+.dark-mesh-pro {
+    background: rgba(15, 23, 42, 0.7) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    color: white !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+}
+
+#dash-precio,
+#dash-ganancia,
+#dash-tax,
+#dash-costo,
+#dash-bruta {
+    text-shadow: 0 0 8px rgba(59, 130, 246, 0.15);
+}
+
+.dark #dash-precio,
+.dark #dash-ganancia,
+.dark #dash-tax,
+.dark #dash-costo,
+.dark #dash-bruta {
+    text-shadow: 0 0 12px rgba(59, 130, 246, 0.25);
+}
+
+.unified-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
+    background-color: rgba(241, 245, 249, 0.8);
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+}
+
+.dark .unified-box {
+    background-color: #020617;
+    border-color: #1e293b;
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.unified-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+}
+
+.dark .unified-row {
+    border-bottom-color: rgba(30, 41, 59, 0.5);
+}
+
+.unified-row:last-child {
+    border-bottom: none;
+}
+
+.liquid-gradient {
+    background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+    box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
+}
+
+#table-container {
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 1px solid rgba(203, 213, 225, 0.4);
+}
+
+.dark #table-container {
+    border-color: rgba(51, 65, 85, 0.6);
+}
+
+#tbody-productos tr:nth-child(even) {
+    background-color: rgba(241, 245, 249, 0.5);
+}
+
+.dark #tbody-productos tr:nth-child(even) {
+    background-color: rgba(30, 41, 59, 0.25);
+}
+
+#tbody-productos tr:hover {
+    background-color: rgba(219, 234, 254, 0.4);
+}
+
+.dark #tbody-productos tr:hover {
+    background-color: rgba(51, 65, 85, 0.5);
+}
+
+#tbody-productos td:first-child {
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+}
+
+#tbody-productos td:last-child {
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+#toast-container {
+    position: fixed;
+    top: 1.5rem;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: translateY(-250%);
+}
+
+#toast-container.active {
+    transform: translateY(0);
+    animation: slideDown 0.4s ease-out forwards;
+}
+
+#toast-container>div {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.08);
+    border-left-width: 5px;
+}
+
+.dark #toast-container>div {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+}
+
+#confirm-toast-container>div {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+    border-left-width: 5px;
+}
+
+.dark #confirm-toast-container>div {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+}
+
+#confirm-toast-cancel,
+#confirm-toast-delete {
+    transition: all 0.2s ease;
+    border-radius: 0.75rem;
+}
+
+#confirm-toast-cancel:hover,
+#confirm-toast-delete:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-250%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+html {
+    scrollbar-color: #cbd5e1 #f1f5f9;
+    scrollbar-width: thin;
+}
+
+.dark html,
+.dark body {
+    scrollbar-color: #4b5563 #1e293b;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-track {
+    background: #1e293b;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #4b5563;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+}
+
+.dark .bg-brand-600 {
+    background: linear-gradient(135deg, #2563eb, #1c5169) !important;
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+    color: #ffffff !important;
+}
+
+.dark .bg-brand-600:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af) !important;
+    transform: scale(1.02);
+    color: #f0f9ff !important;
+}
+
+.dark .text-brand-500.font-black {
+    color: #93c5fd !important;
+}
+
+.dark .text-brand-500.font-black:hover {
+    color: #bfdbfe !important;
+}
+
+.dark button.bg-brand-600 {
+    background: #2563eb !important;
+    color: white !important;
+}
+
+.dark button.bg-brand-600:hover {
+    background: #1d4ed8 !important;
+    color: #f8fafc !important;
+}
+
+.dark .liquid-gradient {
+    background: linear-gradient(135deg, #1e3a8a, #312e81) !important;
+    box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.5);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: #e0f2fe !important;
+}
+
+.dark .liquid-gradient div,
+.dark .liquid-gradient p {
+    color: #f8fafc !important;
+}
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    .print-only {
+        display: block !important;
+    }
+
+    body {
+        background: white !important;
+        color: black !important;
+        padding: 0 !important;
+    }
+}
+
+.print-only {
+    display: none;
+}
+
+#inventory-header.empty-mode {
+    padding-bottom: 1.1rem !important;
+}

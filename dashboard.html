@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITechProject | Dashboard</title>
+    <script src="js/tailwind.js"></script>
+    <script src="js/tailwind-config.js"></script>
+    <script src="js/lucide.js"></script>
+    <link href="css/fonts.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+
+<body class="bg-[#f8fafc] dark:bg-darkbg text-slate-900 dark:text-slate-100 min-h-screen">
+
+    <!-- FACTURA PARA EXPORTAR (se imprime) -->
+    <div id="invoice-capture" class="print-only p-12 bg-white text-slate-900 min-h-screen">
+        <div class="flex justify-between items-start border-b-8 border-slate-900 pb-10 mb-10 text-slate-900">
+            <div>
+                <h1 class="text-5xl font-black uppercase tracking-tighter">ITech<span class="text-blue-600">Project</span></h1>
+                <p class="text-[10px] font-bold text-slate-400 mt-2 uppercase tracking-[0.3em]">Software & Engineering Solutions</p>
+            </div>
+            <div class="text-right">
+                <h2 class="text-2xl font-black uppercase mb-1">Precio de Oferta</h2>
+                <p id="inv-date" class="text-sm font-bold text-slate-600"></p>
+                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Ref: #<span id="inv-ref"></span></p>
+            </div>
+        </div>
+        <div class="mb-8 text-sm">
+            <p>Tasa de Cambio: <span id="inv-tasa" class="font-bold text-blue-700"></span> CUP</p>
+        </div>
+        <table class="w-full mb-12">
+            <thead>
+                <tr class="bg-slate-900 text-white uppercase text-[10px] tracking-widest font-black text-left">
+                    <th class="p-5">Concepto</th>
+                    <th class="p-5 text-right">Importe Liquidado (CUP)</th>
+                </table>
+            </thead>
+            <tbody id="inv-body" class="divide-y-2 divide-slate-100 font-bold text-slate-700"></tbody>
+        </table>
+        <div class="flex justify-end pt-10 border-t-4 border-slate-900">
+            <div class="text-right">
+                <span class="text-xs font-black uppercase text-slate-400 block mb-1 tracking-widest">Total Bruto a Liquidar</span>
+                <span id="inv-total" class="text-6xl font-black text-blue-700 font-mono-finance tracking-tighter"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="no-print">
+        <!-- Toast de éxito/error -->
+        <div id="toast-container">
+            <div class="bg-white dark:bg-slate-800 flex items-center gap-4 px-6 py-4 rounded-lg shadow-2xl border-l-4 border-l-brand-500 max-w-sm w-full font-bold text-xs pointer-events-auto">
+                <i id="toast-icon" data-lucide="info" class="text-brand-500"></i>
+                <p id="toast-message" class="text-slate-600 dark:text-white"></p>
+            </div>
+        </div>
+
+        <!-- Toast de confirmación para eliminar -->
+        <div id="confirm-toast-container" style="pointer-events: auto; display: none;" class="fixed top-6 left-0 right-0 z-[1001] flex justify-center">
+            <div class="bg-white dark:bg-slate-800 flex items-center justify-between gap-4 px-6 py-4 rounded-lg shadow-2xl border-l-4 border-l-red-500 max-w-sm w-full font-bold text-xs">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="alert-triangle" class="text-red-500 w-5 h-5 flex-shrink-0"></i>
+                    <p id="confirm-toast-message" class="text-slate-600 dark:text-white"></p>
+                </div>
+                <div class="flex gap-2">
+                    <button id="confirm-toast-cancel" class="px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-black text-[10px] uppercase hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Cancelar</button>
+                    <button id="confirm-toast-delete" class="px-3 py-1 rounded-lg bg-red-600 text-white font-black text-[10px] uppercase hover:bg-red-700 transition-colors">Eliminar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL PARA FALTA DE TASA -->
+        <div id="missingTasaModal" class="modal-overlay no-print">
+            <div class="bg-white dark:bg-[#121926] max-w-sm w-full p-6 rounded-lg text-center shadow-2xl border border-white dark:border-slate-800">
+                <div class="w-14 h-14 bg-amber-500/10 rounded-xl flex items-center justify-center mx-auto mb-3 text-amber-500"><i data-lucide="alert-triangle" class="w-7 h-7"></i></div>
+                <h3 class="text-lg font-bold mb-2 uppercase text-amber-600">Tasa Cambiaria</h3>
+                <p class="text-slate-600 dark:text-slate-300 text-sm mb-5">Por favor, ingrese la cantidad en el campo superior (Tasa Cambiaria).</p>
+                <button id="missingTasaOk" class="w-full py-2.5 rounded-lg bg-blue-600 text-white font-black text-[11px] uppercase shadow-lg">Aceptar</button>
+            </div>
+        </div>
+
+        <!-- MODAL REINICIO -->
+        <div id="resetModal" class="modal-overlay no-print">
+            <div class="bg-white dark:bg-[#121926] max-w-sm w-full p-10 rounded-lg text-center shadow-2xl border border-white dark:border-slate-800">
+                <div class="w-16 h-16 bg-red-500/10 rounded-xl flex items-center justify-center mx-auto mb-4 text-red-500 font-black"><i data-lucide="alert-circle"></i></div>
+                <h3 class="text-xl font-bold mb-2 uppercase text-red-600">Reiniciar Sistema</h3>
+                <p class="text-slate-500 text-[10px] mb-8 font-bold uppercase tracking-widest leading-relaxed px-4">Se perderán todos los datos actuales.</p>
+                <div class="flex gap-4">
+                    <button onclick="closeResetModal()" class="flex-1 py-3.5 rounded-lg bg-slate-100 dark:bg-slate-800 font-black text-[10px] uppercase">Cerrar</button>
+                    <button onclick="confirmReset()" class="flex-1 py-4 rounded-lg bg-red-600 text-white font-black text-[11px] uppercase shadow-lg">Borrar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL LIMPIAR CONFIGURACIÓN -->
+        <div id="cleanConfigModal" class="modal-overlay no-print">
+            <div class="bg-white dark:bg-[#121926] max-w-sm w-full p-6 rounded-lg text-center shadow-2xl border border-white dark:border-slate-800">
+                <div class="w-14 h-14 bg-amber-500/10 rounded-xl flex items-center justify-center mx-auto mb-3 text-amber-500"><i data-lucide="alert-triangle" class="w-7 h-7"></i></div>
+                <h3 class="text-lg font-bold mb-2 uppercase text-amber-600">Limpiar Configuración</h3>
+                <p class="text-slate-600 dark:text-slate-300 text-sm mb-5">¿Está seguro de limpiar toda la configuración?<br>Se perderán los cambios no guardados.</p>
+                <div class="flex gap-3">
+                    <button id="cleanConfigCancel" class="flex-1 py-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 font-black text-[11px] uppercase">Cancelar</button>
+                    <button id="cleanConfigConfirm" class="flex-1 py-2.5 rounded-lg bg-red-600 text-white font-black text-[11px] uppercase shadow-lg">Aceptar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- NAVEGACIÓN -->
+        <nav class="p-4 md:p-6 sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-lg p-2 px-8 shadow-sm flex flex-col lg:flex-row justify-between items-center gap-4 border border-white/20 dark:border-slate-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-brand-600 rounded-full flex items-center justify-center text-white shadow-lg"><i data-lucide="zap" class="w-5 h-5 fill-current"></i></div>
+                    <div><h1 class="text-base font-black uppercase tracking-tighter leading-none text-slate-700 dark:text-white">ITech<span class="text-brand-600">Project</span></h1><span class="text-[7px] font-bold text-slate-400 tracking-[0.4em]">CONTROL DE PRECIOS PRO V6.5</span></div>
+                </div>
+                <div class="flex flex-wrap items-center justify-center gap-4">
+                    <div class="flex items-center bg-slate-100 dark:bg-slate-950 p-1.5 rounded-lg border border-slate-200 dark:border-slate-800 shadow-inner px-5 font-bold">
+                        <div class="px-4 border-r dark:border-slate-800 text-center"><label class="text-[7px] font-black uppercase text-slate-400 block mb-0.5 tracking-widest">Tasa Cambiaria</label><input type="number" id="cfg-tasa" placeholder="--" onfocus="this.select()" class="w-12 text-center dark:text-blue-400 font-bold"></div>
+                        <div class="px-4 border-r dark:border-slate-800 text-center"><label class="text-[7px] font-black uppercase text-slate-400 block mb-0.5 tracking-widest">Utilidad %</label><input type="number" id="cfg-util" placeholder="0" onfocus="this.select()" class="w-10 text-center dark:text-blue-400 font-bold"></div>
+                        <div class="px-4 border-r dark:border-slate-800 text-center"><label class="text-[7px] font-black uppercase text-slate-400 block mb-0.5 tracking-widest">Efectivo %</label><input type="number" id="cfg-efec" placeholder="0" onfocus="this.select()" class="w-10 text-center dark:text-blue-400 font-bold"></div>
+                        <div class="px-4 text-center flex items-center justify-center"><button onclick="limpiarConfig()" class="text-slate-400 hover:text-brand-600 text-[8px] font-black uppercase tracking-widest transition-colors">Limpiar</button></div>
+                    </div>
+                    <button onclick="calcularTodoTrigger()" class="bg-brand-600 hover:bg-brand-700 text-white px-8 py-3 rounded-lg font-black text-[11px] uppercase tracking-widest flex items-center gap-2 shadow-lg transition-all active:scale-95"><i data-lucide="calculator" class="w-4 h-4"></i> Calcular</button>
+                    <button onclick="toggleTheme()" class="w-11 h-11 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center shadow-sm hover:scale-110 text-slate-600 dark:text-brand-500"><i id="theme-icon" data-lucide="moon"></i></button>
+                    <!-- Botón de cerrar sesión (nuevo) -->
+                    <button onclick="logout()" class="text-slate-400 hover:text-red-500 text-[8px] font-black uppercase tracking-widest transition-colors ml-2"><i data-lucide="log-out" class="w-4 h-4 inline mr-1"></i> Salir</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- MAIN (aquí va todo el contenido de la app, igual que en tu original) -->
+        <main class="max-w-7xl mx-auto p-4 md:p-6 space-y-8 pb-24">
+            <!-- DASHBOARD -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 text-center font-bold">
+                <!-- Venta Liquidada -->
+                <div class="card-wave wave-blue card-pro rounded-lg border-b-8 border-brand-500 shadow-sm flex flex-col justify-center">
+                    <div class="flex items-center justify-center gap-2 mb-1"><i data-lucide="dollar-sign" class="w-4 h-4 text-brand-600"></i><p class="text-[10px] font-black text-brand-600 uppercase tracking-widest">Venta Liquidada</p></div>
+                    <div id="dash-precio" class="text-2xl font-black text-brand-600 font-mono-finance tracking-tighter">$ 0.00</div>
+                </div>
+                <!-- Utilidad Bruta -->
+                <div class="card-wave wave-indigo card-pro rounded-lg border-b-8 border-indigo-500 shadow-sm flex flex-col justify-center">
+                    <div class="flex items-center justify-center gap-2 mb-1"><i data-lucide="trending-up" class="w-4 h-4 text-indigo-600"></i><p class="text-[10px] font-black text-indigo-600 uppercase tracking-widest">Utilidad Bruta</p></div>
+                    <div id="dash-bruta" class="text-2xl font-black text-indigo-600 font-mono-finance tracking-tighter">$ 0.00</div>
+                </div>
+                <!-- Utilidad Neta -->
+                <div class="card-wave wave-green card-pro rounded-lg border-b-8 border-emerald-500 shadow-sm flex flex-col justify-center">
+                    <div class="flex items-center justify-center gap-2 mb-1"><i data-lucide="target" class="w-4 h-4 text-emerald-600"></i><p class="text-[10px] font-black text-emerald-500 uppercase tracking-widest">Utilidad Neta</p></div>
+                    <div id="dash-ganancia" class="text-2xl font-black text-emerald-500 font-mono-finance tracking-tighter">$ 0.00</div>
+                </div>
+                <!-- Retenciones ONAT -->
+                <div class="card-wave wave-orange card-pro rounded-lg border-b-8 border-amber-500 shadow-sm flex flex-col justify-center">
+                    <div class="flex items-center justify-center gap-2 mb-1"><i data-lucide="alert-octagon" class="w-4 h-4 text-amber-600"></i><p class="text-[10px] font-black text-amber-500 uppercase tracking-widest">Retenciones ONAT</p></div>
+                    <div id="dash-tax" class="text-2xl font-black text-amber-500 font-mono-finance tracking-tighter">$ 0.00</div>
+                </div>
+                <!-- Inversión Base Total -->
+                <div class="dark-mesh-pro card-pro rounded-lg shadow-2xl flex flex-col justify-center border-b-8 border-blue-400 text-white">
+                    <div class="flex items-center justify-center gap-2 mb-1"><i data-lucide="database" class="w-4 h-4 text-blue-300"></i><p class="text-[10px] font-black opacity-80 uppercase tracking-widest">Inversión Base Total</p></div>
+                    <div id="dash-costo" class="text-2xl font-black font-mono-finance">$ 0.00</div>
+                </div>
+            </div>
+
+            <!-- TABLA DE PRODUCTOS + SIDEBAR -->
+            <div class="flex flex-col lg:flex-row gap-8 items-stretch">
+                <div class="flex-1 space-y-10">
+                    <div class="bg-white dark:bg-darkcard rounded-lg border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden h-full flex flex-col">
+                        <div id="inventory-header" class="inventory-header p-8 border-b border-slate-50 dark:border-slate-800 flex justify-between items-center bg-slate-50/20 dark:bg-transparent">
+                            <div class="flex items-center gap-3 text-brand-500"><i data-lucide="box" class="w-7 h-7"></i><h2 class="font-black text-[13px] uppercase tracking-widest text-slate-500">Operaciones de costo (<span id="contador-productos">0</span>)</h2></div>
+                            <button onclick="addRow('productos')" class="bg-brand-600 hover:bg-brand-700 text-white px-7 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-lg transition-all">+ Añadir</button>
+                        </div>
+                        <div class="p-6 flex-1 min-h-0">
+                            <div id="table-container" class="overflow-x-auto hidden">
+                                <table class="w-full text-left">
+                                    <thead class="text-[10px] font-black uppercase text-slate-300 dark:text-slate-600 tracking-widest">
+                                        <tr><th class="p-4 pl-8 w-2/5">Producto o Servicio</th><th class="p-4 text-center w-[30%]">Moneda / Monto</th><th class="p-4 text-center w-[15%]">Sugerido</th><th class="p-4 text-right uppercase w-[15%]">Subtotal</th><th class="p-4 text-center w-12"></th></tr>
+                                    </thead>
+                                    <tbody id="tbody-productos" class="divide-y divide-slate-50 dark:divide-slate-800/50 font-bold text-slate-700 dark:text-slate-300"></tbody>
+                                </table>
+                            </div>
+                            <div id="empty-state" class="flex flex-col items-center justify-center py-24 opacity-30 text-center"><i data-lucide="package-search" class="w-20 h-20 text-brand-500 mb-6"></i><h3 class="text-slate-800 dark:text-slate-200 font-extrabold uppercase text-[14px] tracking-widest">Sin registros</h3></div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="w-80 flex-shrink-0 space-y-6 lg:sticky lg:top-36 font-bold text-center">
+                    <div class="bg-white dark:bg-darkcard rounded-lg p-8 border border-slate-100 dark:border-slate-800 shadow-2xl flex flex-col gap-6">
+                        <div class="flex items-center justify-center gap-3 text-slate-500"><i data-lucide="pie-chart" class="w-7 h-7"></i><h3 class="font-black text-sm uppercase tracking-widest">Resumen de Impuestos</h3></div>
+                        <div class="unified-box">
+                            <div class="unified-row"><div class="flex flex-col items-start"><div class="flex items-center gap-2 mb-0.5 text-blue-400"><i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i><label class="text-[10px] font-black uppercase tracking-widest">Ventas o Servicios (10%)</label></div><span id="tax-10-val" class="font-mono-finance font-bold text-sm text-slate-800 dark:text-slate-200 tracking-tighter">$ 0.00</span></div></div>
+                            <div class="unified-row"><div class="flex flex-col items-start"><div class="flex items-center gap-2 mb-0.5 text-emerald-500"><i data-lucide="user-check" class="w-3.5 h-3.5"></i><label class="text-[10px] font-black uppercase tracking-widest">Ingresos Personales (5%)</label></div><span id="tax-5-val" class="font-mono-finance font-bold text-sm text-slate-800 dark:text-slate-200 tracking-tighter">$ 0.00</span></div></div>
+                            <div class="unified-row"><div class="flex flex-col items-start"><div class="flex items-center gap-2 mb-0.5 text-amber-500"><i data-lucide="calendar" class="w-3.5 h-3.5"></i><label class="text-[10px] font-black uppercase tracking-widest">Acumulativo-DJ08 (10%)</label></div><span id="tax-15-val" class="font-mono-finance font-bold text-sm text-slate-800 dark:text-slate-200 tracking-tighter">$ 0.00</span></div></div>
+                        </div>
+                        <div class="liquid-gradient p-3 rounded-lg text-white text-center mt-4 shadow-xl"><p class="text-[9px] font-black uppercase tracking-widest mb-1 opacity-70 font-bold">Liquidación Sugerida</p><div id="p-final-val" class="text-4xl font-black font-mono-finance tracking-tighter">$ 0.00</div></div>
+                        <div class="space-y-4 pt-4 border-t dark:border-slate-800 text-center"><button onclick="generarFactura()" class="w-full bg-slate-950 dark:bg-slate-800 border dark:border-slate-700 text-white font-black py-4 rounded-lg flex items-center justify-center gap-3 uppercase text-[13px] tracking-widest shadow-xl transition-all hover:scale-105 active:scale-95"><i data-lucide="printer" class="w-4 h-4"></i> Exportar </button><button onclick="openResetModal()" class="flex items-center justify-center gap-2 text-slate-400 font-black text-[10px] uppercase tracking-[0.3em] py-3 hover:text-red-500 transition-all group mx-auto font-bold"><i data-lucide="refresh-cw" class="w-3.5 h-3.5 group-hover:rotate-180 transition-all duration-500"></i> Limpiar Todo</button></div>
+                    </div>
+                </aside>
+            </div>
+
+            <!-- NÓMINA Y GASTOS -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 font-bold">
+                <div class="bg-white dark:bg-darkcard rounded-lg p-4 border border-slate-100 dark:border-slate-800 shadow-sm">
+                    <div class="flex justify-between items-center mb-6 px-2 text-slate-400 uppercase tracking-widest font-black text-[13px] font-bold"><h3 class="flex items-center gap-3"><i data-lucide="users" class="w-7 h-7 text-brand-500"></i> Nómina de Empleados <span id="contador-salarios">(0)</span></h3><button onclick="addRow('salarios')" class="text-brand-500 font-black">+ Añadir</button></div>
+                    <div id="list-salarios" class="space-y-4"></div>
+                </div>
+                <div class="bg-white dark:bg-darkcard rounded-lg p-4 border border-slate-100 dark:border-slate-800 shadow-sm">
+                    <div class="flex justify-between items-center mb-6 px-2 text-slate-400 uppercase tracking-widest font-black text-[13px] font-bold"><h3 class="flex items-center gap-3"><i data-lucide="wallet" class="w-7 h-7 text-brand-500"></i> Gastos Operativos <span id="contador-gastos">(0)</span></h3><button onclick="addRow('gastos')" class="text-brand-500 font-black">+ Añadir</button></div>
+                    <div id="list-gastos" class="space-y-4"></div>
+                </div>
+            </div>
+
+            <footer class="text-center py-20 opacity-20 text-[10px] uppercase font-black tracking-[0.4em] text-slate-400">© 2026 ITechProject Price Control. All Rights Reserved.</footer>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

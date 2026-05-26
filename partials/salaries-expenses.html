@@ -1,0 +1,20 @@
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 font-bold">
+    <div class="bg-white dark:bg-darkcard rounded-lg p-4 border border-slate-100 dark:border-slate-800 shadow-sm">
+        <div
+            class="flex justify-between items-center mb-6 px-2 text-slate-400 uppercase tracking-widest font-black text-[13px] font-bold">
+            <h3 class="flex items-center gap-3"><i data-lucide="users" class="w-7 h-7 text-brand-500"></i> Nómina de
+                Empleados <span id="contador-salarios">(0)</span></h3>
+            <button onclick="addRow('salarios')" class="text-brand-500 font-black">+ Añadir</button>
+        </div>
+        <div id="list-salarios" class="space-y-4"></div>
+    </div>
+    <div class="bg-white dark:bg-darkcard rounded-lg p-4 border border-slate-100 dark:border-slate-800 shadow-sm">
+        <div
+            class="flex justify-between items-center mb-6 px-2 text-slate-400 uppercase tracking-widest font-black text-[13px] font-bold">
+            <h3 class="flex items-center gap-3"><i data-lucide="wallet" class="w-7 h-7 text-brand-500"></i> Gastos
+                Operativos <span id="contador-gastos">(0)</span></h3>
+            <button onclick="addRow('gastos')" class="text-brand-500 font-black">+ Añadir</button>
+        </div>
+        <div id="list-gastos" class="space-y-4"></div>
+    </div>
+</div>

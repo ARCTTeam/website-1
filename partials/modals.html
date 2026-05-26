@@ -1,0 +1,14 @@
+<!-- MODAL CONFIRMACIÓN PARA LIMPIAR CONFIGURACIÓN -->
+<div id="cleanConfigModal" class="modal-overlay no-print">
+    <div class="bg-white dark:bg-[#121926] max-w-sm w-full p-6 rounded-lg text-center shadow-2xl border border-white dark:border-slate-800">
+        <div class="w-14 h-14 bg-amber-500/10 rounded-xl flex items-center justify-center mx-auto mb-3 text-amber-500">
+            <i data-lucide="alert-triangle" class="w-7 h-7"></i>
+        </div>
+        <h3 class="text-lg font-bold mb-2 uppercase text-amber-600">Limpiar Configuración</h3>
+        <p class="text-slate-600 dark:text-slate-300 text-sm mb-5">¿Está seguro de limpiar toda la configuración?<br>Se perderán los cambios no guardados.</p>
+        <div class="flex gap-3">
+            <button id="cleanConfigCancel" class="flex-1 py-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 font-black text-[11px] uppercase transition-colors hover:bg-slate-200 dark:hover:bg-slate-700">Cancelar</button>
+            <button id="cleanConfigConfirm" class="flex-1 py-2.5 rounded-lg bg-red-600 text-white font-black text-[11px] uppercase shadow-lg transition-colors hover:bg-red-700">Aceptar</button>
+        </div>
+    </div>
+</div>
